@@ -1,19 +1,27 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application, Loader, Sprite } from 'pixi.js';
 
-const app = new Application<HTMLCanvasElement>({
-	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-	resolution: window.devicePixelRatio || 1,
-	autoDensity: true,
-	backgroundColor: 0x6495ed,
-	width: 640,
-	height: 480
+const app = new Application({
+  view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
+  resolution: window.devicePixelRatio || 1,
+  autoDensity: true,
+  backgroundColor: 0x6495ed,
+  width: 640,
+  height: 480
 });
 
-const clampy: Sprite = Sprite.from("clampy.png");
+Loader.shared.add({ url: "./r2d2.jpg", name: "myRobot" }); 
 
-clampy.anchor.set(0.5);
+Loader.shared.onComplete.add(() => {
+  const clampy: Sprite = Sprite.from("myRobot");
 
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
+  console.log("Hola mundo", clampy.width, clampy.height);
 
-app.stage.addChild(clampy);
+  clampy.anchor.set(0.5);
+
+  clampy.x = 300;
+  clampy.y = 300;
+
+  app.stage.addChild(clampy);
+});
+
+Loader.shared.load();
